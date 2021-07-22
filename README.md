@@ -20,9 +20,9 @@ Avant la première utilisation et après chaque mise à jour des dépendances du
 
 `docker-compose run prototype_architecture_decouplee_api npm install`
 
-## Base de données
+## Documentation Postman
 
-Passer par Adminer pour l'import de la base de données MySQL
+`./Prototype Architecture Découplée.postman_collection.json`
 
 #### Connexion à Adminer
 
