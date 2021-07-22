@@ -1,3 +1,4 @@
+backend/strapi/.env
 backend/api/.env
 backend/api/node_modules
 backend/db/.env

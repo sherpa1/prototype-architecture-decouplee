@@ -68,6 +68,20 @@ https://mariadb.org/
 ### Install Strapi + MariaDB with Docker
 https://strapi.io/documentation/developer-docs/latest/setup-deployment-guides/installation/docker.html
 
+### Documentation
+
+https://strapi.io/documentation/developer-docs/latest/getting-started/introduction.html
+
+### Admin
+
+http://localhost:1337/admin/
+
+login : john@doe.com
+pwd : Azerty123
+
+### API
+
+http://localhost:1337/
 
 ---
 

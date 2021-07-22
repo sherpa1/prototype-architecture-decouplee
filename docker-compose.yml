@@ -5,6 +5,16 @@ networks:
     driver: bridge
 
 services:
+  prototype_architecture_decouplee_strapi:
+    container_name: prototype_architecture_decouplee_strapi
+    image: strapi/strapi
+    env_file: ./backend/strapi/.env
+    volumes:
+      - ./backend/strapi_app:/srv/app
+    ports:
+      - '1337:1337'
+    depends_on:
+      - prototype_architecture_decouplee_db
   prototype_architecture_decouplee_api:
     container_name: prototype_architecture_decouplee_api
     image: node
