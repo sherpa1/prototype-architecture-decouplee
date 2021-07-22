@@ -2,3 +2,6 @@ backend/api/.env
 backend/api/node_modules
 backend/db/.env
 backend/db_data/
+backend/directus/.env
+backend/pg/.env
+backend/pg_data

@@ -5,43 +5,79 @@ networks:
     driver: bridge
 
 services:
-  prototype_architecture_decouplee_api:
-    container_name: prototype_architecture_decouplee_api
-    image: node
+  directus:
+    container_name: directus
+    image: directus/directus:latest
     ports:
-      - 3010:3000
+      - 8055:8055
     volumes:
-      - ./backend/api:/usr/src/app
-    working_dir: /usr/src/app
-    env_file:
-      - ./backend/api/.env
-    command: npm run dev #for npm modules installation inside container and hot reloading in dev environment
-    #command: bash -c 'npm install && npm start' #for npm modules installation inside container without hot reloading in dev environment
-    #command: npm start #for production environment only
-    #restart: unless-stopped #for production environment only
+      # By default, uploads are stored in /directus/uploads
+      # Always make sure your volumes matches the storage root when using
+      # local driver
+      - ./backend/directus/uploads:/directus/uploads
+      # Make sure to also mount the volume when using SQLite
+      # - ./database:/directus/database
+      # If you want to load extensions from the host
+      # - ./extensions:/directus/extensions
+    env_file: 
+      - backend/directus/.env
     networks:
       - prototype_architecture_decouplee
-    depends_on: 
-      - prototype_architecture_decouplee_db
-    links:
-      - prototype_architecture_decouplee_db
-  prototype_architecture_decouplee_db:
-    container_name: prototype_architecture_decouplee_db
-    image: mariadb
-    env_file:
-      - ./backend/db/.env
-    networks:
-      - prototype_architecture_decouplee
+    depends_on:
+      - prototype_architecture_decouplee_cache
+      - prototype_architecture_decouplee_pg
+  prototype_architecture_decouplee_pg:
+    container_name: prototype_architecture_decouplee_pg
+    image: postgres:12
     volumes:
-      - ./backend/db_data:/var/lib/mysql
-  prototype_architecture_decouplee_adminer:
-    container_name: prototype_architecture_decouplee_adminer
-    image: adminer
-    ports:
-      - 8282:8080
+      - ./backend/pg_data:/var/lib/postgresql/data
     networks:
       - prototype_architecture_decouplee
-    depends_on: 
-      - prototype_architecture_decouplee_db
-    links:
-      - prototype_architecture_decouplee_db
+    env_file:
+      - ./backend/pg/.env
+
+  prototype_architecture_decouplee_cache:
+    container_name: prototype_architecture_decouplee_cache
+    image: redis
+    networks:
+      - prototype_architecture_decouplee
+  # prototype_architecture_decouplee_api:
+  #   container_name: prototype_architecture_decouplee_api
+  #   image: node
+  #   ports:
+  #     - 3010:3000
+  #   volumes:
+  #     - ./backend/api:/usr/src/app
+  #   working_dir: /usr/src/app
+  #   env_file:
+  #     - ./backend/api/.env
+  #   command: npm run dev #for npm modules installation inside container and hot reloading in dev environment
+  #   #command: bash -c 'npm install && npm start' #for npm modules installation inside container without hot reloading in dev environment
+  #   #command: npm start #for production environment only
+  #   #restart: unless-stopped #for production environment only
+  #   networks:
+  #     - prototype_architecture_decouplee
+  #   depends_on: 
+  #     - prototype_architecture_decouplee_db
+  #   links:
+  #     - prototype_architecture_decouplee_db
+  # prototype_architecture_decouplee_db:
+  #   container_name: prototype_architecture_decouplee_db
+  #   image: mariadb
+  #   env_file:
+  #     - ./backend/db/.env
+  #   networks:
+  #     - prototype_architecture_decouplee
+  #   volumes:
+  #     - ./backend/db_data:/var/lib/mysql
+  # prototype_architecture_decouplee_adminer:
+  #   container_name: prototype_architecture_decouplee_adminer
+  #   image: adminer
+  #   ports:
+  #     - 8282:8080
+  #   networks:
+  #     - prototype_architecture_decouplee
+  #   depends_on: 
+  #     - prototype_architecture_decouplee_db
+  #   links:
+  #     - prototype_architecture_decouplee_db
