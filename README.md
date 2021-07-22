@@ -58,16 +58,9 @@ Importer l'archive du schéma de la base de données avec Adminer
 
 `./backend/db/architecture_decouplee_db.sql.gz`
 
-
 ## MariaDB
 
 https://mariadb.org/
-
-## Strapi
-
-### Install Strapi + MariaDB with Docker
-https://strapi.io/documentation/developer-docs/latest/setup-deployment-guides/installation/docker.html
-
 
 ---
 
