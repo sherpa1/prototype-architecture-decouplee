@@ -1,0 +1,47 @@
+version: "3.9"
+
+networks:
+  prototype_architecture_decouplee:
+    driver: bridge
+
+services:
+  prototype_architecture_decouplee_api:
+    container_name: prototype_architecture_decouplee_api
+    image: node
+    ports:
+      - 3010:3000
+    volumes:
+      - ./backend/api:/usr/src/app
+    working_dir: /usr/src/app
+    env_file:
+      - ./backend/api/.env
+    command: npm run dev #for npm modules installation inside container and hot reloading in dev environment
+    #command: bash -c 'npm install && npm start' #for npm modules installation inside container without hot reloading in dev environment
+    #command: npm start #for production environment only
+    #restart: unless-stopped #for production environment only
+    networks:
+      - prototype_architecture_decouplee
+    depends_on: 
+      - prototype_architecture_decouplee_db
+    links:
+      - prototype_architecture_decouplee_db
+  prototype_architecture_decouplee_db:
+    container_name: prototype_architecture_decouplee_db
+    image: mariadb
+    env_file:
+      - ./backend/db/.env
+    networks:
+      - prototype_architecture_decouplee
+    volumes:
+      - ./backend/db_data:/var/lib/mysql
+  prototype_architecture_decouplee_adminer:
+    container_name: prototype_architecture_decouplee_adminer
+    image: adminer
+    ports:
+      - 8282:8080
+    networks:
+      - prototype_architecture_decouplee
+    depends_on: 
+      - prototype_architecture_decouplee_db
+    links:
+      - prototype_architecture_decouplee_db
